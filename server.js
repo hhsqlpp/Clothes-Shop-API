@@ -520,30 +520,62 @@ db.defaults({
     {
       name: "Мужская Обувь",
       img: "https://slonsneakers.ru/userfiles/bs/67hvc_ofhgg_5.jpg",
-      href: "shoes"
+      href: "shoes",
     },
     {
       name: "Футболки",
       img: "https://sneakerhead.ru/upload/resize_cache/webp/iblock/f8c/f8cc73ab0e6cee45711807e9bac6aca9.webp",
-      href: "Tshirts"
+      href: "Tshirts",
     },
     {
       name: "Худи",
       img: "https://merchpoint.ru/wp-content/uploads/2021/02/%D0%A5%D1%83%D0%B4%D0%B8-Improve-Dynamics-1.png",
-      href: "hoodies"
+      href: "hoodies",
     },
     {
       name: "Штаны",
       img: "https://cbu01.alicdn.com/img/ibank/2019/685/159/11353951586_287164840.jpg",
-      href: "trousers"
+      href: "trousers",
     },
     {
       name: "Куртки",
       img: "https://i.pinimg.com/originals/e1/53/98/e15398d937d0221b8fd5fc99f57c0933.jpg",
-      href: "jackets"
+      href: "jackets",
+    },
+  ],
+  brands: [
+    {
+      name: "Nike",
+      img: "https://slonsneakers.ru/userfiles/shop/small/1_nike.png",
+    },
+    {
+      name: "Supreme",
+      img: "https://slonsneakers.ru/userfiles/shop/small/6919_supreme.png",
+    },
+    {
+      name: "Adidas",
+      img: "https://slonsneakers.ru/userfiles/shop/small/2_adidas.png",
+    },
+    {
+      name: "Thrasher",
+      img: "https://slonsneakers.ru/userfiles/shop/small/6880_thrasher.png",
+    },
+    {
+      name: "Reebok",
+      img: "https://slonsneakers.ru/userfiles/shop/small/3_reebok.png",
+    },
+    {
+      name: "Palace",
+      img: "https://slonsneakers.ru/userfiles/shop/small/6881_palace.jpg",
     },
   ],
 }).write();
+
+// Get brands
+app.get("/brands", (req, res) => {
+  const data = db.get("brands");
+  res.send(data);
+});
 
 // Get all categories
 app.get("/categories", (req, res) => {
