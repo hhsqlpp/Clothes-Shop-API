@@ -569,7 +569,23 @@ db.defaults({
       img: "https://slonsneakers.ru/userfiles/shop/small/6881_palace.jpg",
     },
   ],
+  cart: [],
 }).write();
+
+// Cart
+app.post("/addToCart", (req, res) => {
+  const newItem = {
+    id: shortid.generate(),
+    name: req.body.name,
+    count: req.body.count,
+    price: req.body.price,
+    image: req.body.image || null,
+    size: req.body.size,
+  };
+
+  db.get("cart").push(newItem).write();
+  res.send({ ...newItem });
+});
 
 // Get brands
 app.get("/brands", (req, res) => {
