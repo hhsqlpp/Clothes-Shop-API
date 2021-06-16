@@ -569,8 +569,34 @@ db.defaults({
       img: "https://slonsneakers.ru/userfiles/shop/small/6881_palace.jpg",
     },
   ],
-  cart: [],
+  users: []
 }).write();
+
+// Login
+app.get("/me", (req, res) => {
+  const token = req.get("X-Auth");
+  const user = db.get("users").find({token}).value();
+  res.send(user.data)
+})
+
+app.post("/login", (req, res) => {
+  const { name, password } = req.body;
+  const user = db.get('users').find({ auth: { name, password } }).value();
+  res.send({ token: user.token, data: user.data });
+})
+
+app.post("/signin", (req, res) => {
+  const { password, name, age, email, phone } = req.body;
+
+  const user = { 
+    auth: { name, password },
+    data: { name, email, age, phone },
+    token: `token_${shortid.generate()}` 
+  }
+
+  db.get('users').push(user).write()
+  res.send({ token: user.token, data: user.data })
+})
 
 // Cart
 app.post("/addToCart", (req, res) => {
