@@ -569,34 +569,54 @@ db.defaults({
       img: "https://slonsneakers.ru/userfiles/shop/small/6881_palace.jpg",
     },
   ],
-  users: []
+  users: [],
+  orders: [],
 }).write();
+
+// Order
+app.get("/orders", (req, res) => {
+  const data = db.get("orders");
+  res.send(data);
+});
+
+app.get("/orders/:id", (req, res) => {
+  const { id } = req.params;
+  const data = db.get("orders").value();
+  const order = data.find((item) => item.id === id);
+  res.send(order);
+});
+
+app.post("/orders/addItem", (req, res) => {
+  const order = { ...req.body, id: shortid.generate() };
+  db.get("orders").push(order).write();
+  res.send({ ...order });
+});
 
 // Login
 app.get("/me", (req, res) => {
   const token = req.get("X-Auth");
-  const user = db.get("users").find({token}).value();
-  res.send(user.data)
-})
+  const user = db.get("users").find({ token }).value();
+  res.send(user.data);
+});
 
 app.post("/login", (req, res) => {
   const { name, password } = req.body;
-  const user = db.get('users').find({ auth: { name, password } }).value();
+  const user = db.get("users").find({ auth: { name, password } }).value();
   res.send({ token: user.token, data: user.data });
-})
+});
 
 app.post("/signin", (req, res) => {
   const { password, name, age, email, phone } = req.body;
 
-  const user = { 
+  const user = {
     auth: { name, password },
     data: { name, email, age, phone },
-    token: `token_${shortid.generate()}` 
-  }
+    token: `token_${shortid.generate()}`,
+  };
 
-  db.get('users').push(user).write()
-  res.send({ token: user.token, data: user.data })
-})
+  db.get("users").push(user).write();
+  res.send({ token: user.token, data: user.data });
+});
 
 // Cart
 app.post("/addToCart", (req, res) => {
