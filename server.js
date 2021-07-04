@@ -575,12 +575,6 @@ db.defaults({
   orders: [],
 }).write();
 
-app.use(express.static(__dirname + "/public"));
- 
-app.use("/", (request, response) => {
-    response.send("<h1>Главная страница</h1>");
-});
-
 // Order
 app.get("/orders", (req, res) => {
   const data = db.get("orders");
