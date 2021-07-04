@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const shortid = require("shortid");
-const port = 1717;
+const port = process.env.port || 1717;
 const app = express();
 
 const low = require("lowdb");
@@ -574,6 +574,12 @@ db.defaults({
   users: [],
   orders: [],
 }).write();
+
+app.use(express.static(__dirname + "/public"));
+ 
+app.use("/", (request, response) => {
+    response.send("<h1>Главная страница</h1>");
+});
 
 // Order
 app.get("/orders", (req, res) => {
