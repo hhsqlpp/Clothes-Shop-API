@@ -9,6 +9,8 @@ const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("db.json");
 const db = low(adapter);
 
+const error = (res, status, text) => res.status(status).json(text).end();
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -636,25 +638,29 @@ app.post("/addToCart", (req, res) => {
 // Get brands
 app.get("/brands", (req, res) => {
   const data = db.get("brands");
+  if (!data) return error(res, 404, "Error");
   res.send(data);
 });
 
 // Get all categories
 app.get("/categories", (req, res) => {
   const data = db.get("categories");
+  if (!data) return error(res, 404, "Error");
   res.send(data);
 });
 
 // Shoes
 app.get("/category/shoes", (req, res) => {
   const data = db.get("shoes").value();
+  if (!data) return error(res, 404, "Error");
   res.send(data);
 });
 
 app.get("/category/shoes/:id", (req, res) => {
   const { id } = req.params;
-  const datas = db.get("shoes").value();
-  const shoe = datas.find((data) => data.id === id);
+  const data = db.get("shoes").value();
+  const shoe = data.find((data) => data.id === id);
+  if (!shoe || !data) return error(res, 404, "Error");
   res.send(shoe);
 });
 
@@ -684,14 +690,16 @@ app.delete("/category/shoes/delete/:id", (req, res) => {
 // Trousers
 app.get("/category/trousers", (req, res) => {
   const data = db.get("trousers").value();
+  if (!data) return error(res, 404, "Error");
   res.send(data);
 });
 
 app.get("/category/trousers/:id", (req, res) => {
   const { id } = req.params;
   const datas = db.get("trousers").value();
-  const shoe = datas.find((data) => data.id === id);
-  res.send(shoe);
+  const trousers = datas.find((data) => data.id === id);
+  if (!datas || !trousers) return error(res, 404, "Error");
+  res.send(trousers);
 });
 
 app.post("/category/trousers/create", (req, res) => {
@@ -720,14 +728,16 @@ app.delete("/category/trousers/delete/:id", (req, res) => {
 // Jackets
 app.get("/category/jackets", (req, res) => {
   const data = db.get("jackets").value();
+  if (!data) return error(res, 404, "Error");
   res.send(data);
 });
 
 app.get("/category/jackets/:id", (req, res) => {
   const { id } = req.params;
-  const datas = db.get("jackets").value();
-  const shoe = datas.find((data) => data.id === id);
-  res.send(shoe);
+  const data = db.get("jackets").value();
+  const jackets = data.find((data) => data.id === id);
+  if (!data || !jackets) return error(res, 404, "Error");
+  res.send(jackets);
 });
 
 app.post("/category/jackets/create", (req, res) => {
@@ -756,14 +766,16 @@ app.delete("/category/jackets/delete/:id", (req, res) => {
 // Tshirts
 app.get("/category/Tshirts", (req, res) => {
   const data = db.get("Tshirts").value();
+  if (!data) return error(res, 404, "Error");
   res.send(data);
 });
 
 app.get("/category/Tshirts/:id", (req, res) => {
   const { id } = req.params;
   const datas = db.get("Tshirts").value();
-  const shoe = datas.find((data) => data.id === id);
-  res.send(shoe);
+  const Tshirt = datas.find((data) => data.id === id);
+  if (!datas || !Tshirt) return error(res, 404, "Error");
+  res.send(Tshirt);
 });
 
 app.post("/category/Tshirts/create", (req, res) => {
@@ -789,17 +801,19 @@ app.delete("/category/Tshirts/delete/:id", (req, res) => {
   res.send("Success deleted");
 });
 
-// Tshirts
+// Hoodies
 app.get("/category/hoodies", (req, res) => {
   const data = db.get("hoodies").value();
+  if (!data) return error(res, 404, "Error");
   res.send(data);
 });
 
 app.get("/category/hoodies/:id", (req, res) => {
   const { id } = req.params;
-  const datas = db.get("hoodies").value();
-  const shoe = datas.find((data) => data.id === id);
-  res.send(shoe);
+  const data = db.get("hoodies").value();
+  const hoodie = data.find((data) => data.id === id);
+  if (!data || !hoodie) return error(res, 404, "Error");
+  res.send(hoodie);
 });
 
 app.post("/category/hoodies/create", (req, res) => {
