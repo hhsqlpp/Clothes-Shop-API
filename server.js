@@ -9,6 +9,8 @@ const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('db.json');
 const db = low(adapter);
 
+const error = (res, status, text) => res.status(status).json(text).end();
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
